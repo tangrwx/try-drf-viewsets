@@ -28,6 +28,7 @@ It turned out to be good, or at least a good fit for my needs.
 
     ```python
     from django.utils.decorators import method_decorator
+    from django.views.decorators.csrf import csrf_protect
 
     @method_decorator(csrf_protect, name='dispatch')
     # @method_decorator(csrf_protect, name='do_login')
