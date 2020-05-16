@@ -26,12 +26,30 @@ It turned out to be good, or at least a good fit for my needs.
 
 2. Security: CSRF
 
-    ```python
-    from django.utils.decorators import method_decorator
-    from django.views.decorators.csrf import csrf_protect
+    Thanks to @Rahul Gupta's answer:
+    > Since DRF needs to support both session and non-session based authentication to the same views, it enforces CSRF check for only authenticated users.
 
-    @method_decorator(csrf_protect, name='dispatch')
-    # @method_decorator(csrf_protect, name='do_login')
-    class AuthViewSet(ViewSet):
-        pass
+    And [the source code of DRF](https://github.com/encode/django-rest-framework/blob/3.11.0/rest_framework/authentication.py#L113) says everything:
+    ```python
+    def authenticate(self, request):
+        """
+        Returns a `User` if the request session currently has a logged in user.
+        Otherwise returns `None`.
+        """
+
+        # Get the session-based user from the underlying HttpRequest object
+        user = getattr(request._request, 'user', None)
+
+        # Unauthenticated, CSRF validation not required
+        if not user or not user.is_active:
+            return None
+
+        self.enforce_csrf(request)
+
+        # CSRF passed with authenticated user
+        return (user, None)
     ```
+
+    References:
+    1. https://stackoverflow.com/a/30875830/11200758
+    2. https://www.django-rest-framework.org/topics/ajax-csrf-cors/#csrf-protection
