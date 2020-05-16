@@ -11,16 +11,6 @@ from rest_framework.viewsets import ViewSet
 # @method_decorator(csrf_protect, name='dispatch')
 @method_decorator(csrf_protect, name='do_login')
 class AuthViewSet(ViewSet):
-    def dispatch(self, request, *args, **kwargs):
-        handler = getattr(self, request.method.lower(), self.http_method_not_allowed)
-        print(handler)
-        print(dir(handler))
-        print(handler.__name__)
-        print(handler.__class__)
-        print(handler.__wrapped__)
-
-        return super().dispatch(request, *args, **kwargs)
-
     @action(detail=False)
     def login(self, request):
         return HttpResponse('''
