@@ -1,15 +1,13 @@
 from django.contrib import auth
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect
 from rest_framework.decorators import action
 from rest_framework.routers import SimpleRouter
 from rest_framework.viewsets import ViewSet
 
 
 # @method_decorator(csrf_protect, name='dispatch')
-@method_decorator(csrf_protect, name='do_login')
+# @method_decorator(csrf_protect, name='do_login')
 class AuthViewSet(ViewSet):
     @action(detail=False)
     def login(self, request):

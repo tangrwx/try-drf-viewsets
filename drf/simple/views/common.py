@@ -29,7 +29,16 @@ class CommonViewSet(ViewSet):
 
     @action(detail=True)
     def edit(self, request, name):
-        return HttpResponse('EDIT')
+        return HttpResponse('''
+            <form method="post">
+                <input type="text" name="comment">
+                <input type="submit" value="Edit">
+            </form>
+        ''')
+
+    @edit.mapping.post
+    def do_edit(self, request, name):
+        return HttpResponse('EDITED')
 
     @action(detail=False)
     def new(self, request):
